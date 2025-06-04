@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: reservation
+  datasource:
+    url: ${app.datasource.db-name.host}
+    username: ${app.datasource.db-name.username}
+    password: ${app.datasource.db-name.password}
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    hikari:
+      maximumPoolSize: 8
+      minimumIdle: 4
+
