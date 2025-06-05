@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.web.model.response
+package com.system.reservation.adapters.web.model.response
 
 data class UserResponse(
     val id: Int,

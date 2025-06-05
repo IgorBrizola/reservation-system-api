@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.web.exceptionHandler
+package com.system.reservation.adapters.web.exceptionHandler
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException
 import com.system.reservation.core.domain.exceptions.BusinessException

@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.web.exceptionHandler
+package com.system.reservation.adapters.web.exceptionHandler
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.OffsetDateTime

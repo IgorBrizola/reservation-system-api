@@ -1,10 +1,8 @@
-package com.system.reservation.adpters.web
+package com.system.reservation.adapters.web
 
-import com.system.reservation.adpters.web.doc.UsersOpenAPI
-import com.system.reservation.adpters.web.model.request.CreateFormUser
-import com.system.reservation.adpters.web.model.response.UserResponse
+import com.system.reservation.adapters.web.doc.UsersOpenAPI
+import com.system.reservation.adapters.web.model.request.CreateFormUser
 import com.system.reservation.core.domain.model.users.Users
-import com.system.reservation.core.domain.model.users.request.NewUser
 import com.system.reservation.core.ports.input.UsersInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping

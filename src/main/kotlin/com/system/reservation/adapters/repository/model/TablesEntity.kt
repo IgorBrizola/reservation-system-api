@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.repository.model
+package com.system.reservation.adapters.repository.model
 
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -17,9 +17,7 @@ data class TablesEntity(
     val name: String,
     val capacity: Int,
     @Enumerated(value = EnumType.STRING)
-    val status: StatusTable
+    val status: StatusTable,
 )
 
-
-enum class StatusTable { AVAILABLE, RESERVED, INACTIVE}
-
+enum class StatusTable { AVAILABLE, RESERVED, INACTIVE }

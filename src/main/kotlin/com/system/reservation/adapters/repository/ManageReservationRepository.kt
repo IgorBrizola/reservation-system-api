@@ -1,6 +1,6 @@
-package com.system.reservation.adpters.repository
+package com.system.reservation.adapters.repository
 
-import com.system.reservation.adpters.repository.jpa.ReservationsJpaRepository
+import com.system.reservation.adapters.repository.jpa.ReservationsJpaRepository
 import com.system.reservation.core.ports.output.ReservationsOutPutPort
 import org.springframework.stereotype.Repository
 

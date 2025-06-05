@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.web.exceptionHandler
+package com.system.reservation.adapters.web.exceptionHandler
 
 enum class ProblemType(
     val path: String,

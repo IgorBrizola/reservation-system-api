@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.web.doc
+package com.system.reservation.adapters.web.doc
 
 import io.swagger.v3.oas.annotations.tags.Tag
 

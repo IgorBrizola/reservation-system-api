@@ -1,6 +1,6 @@
-package com.system.reservation.adpters.web
+package com.system.reservation.adapters.web
 
-import com.system.reservation.adpters.web.doc.ReservationOpenAPI
+import com.system.reservation.adapters.web.doc.ReservationOpenAPI
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 

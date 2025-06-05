@@ -1,4 +1,4 @@
-package com.system.reservation.adpters.web.model.request
+package com.system.reservation.adapters.web.model.request
 
 data class CreateFormUser(
     val name: String,
