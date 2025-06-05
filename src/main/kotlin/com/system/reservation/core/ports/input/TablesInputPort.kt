@@ -10,5 +10,5 @@ interface TablesInputPort {
 
     fun verifyNameUppercaseTable(nameTable: String)
 
-    fun listAllTables(): List<TablesEntity>
+    fun listAllTables(statusTableIds: List<Int>?): List<TablesEntity>
 }

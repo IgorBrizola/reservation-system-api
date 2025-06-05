@@ -32,5 +32,5 @@ class TablesInputPort(
             }
         }
 
-    override fun listAllTables(): List<TablesEntity> = tablesOutPutPort.findAllTables()
+    override fun listAllTables(statusTableIds: List<Int>?): List<TablesEntity> = tablesOutPutPort.findAllTables(statusTableIds)
 }

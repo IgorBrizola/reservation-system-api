@@ -1,8 +1,7 @@
 package com.system.reservation.adapters.repository.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.Entity
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -16,8 +15,6 @@ data class TablesEntity(
     val id: Int? = null,
     val name: String,
     val capacity: Int,
-    @Enumerated(value = EnumType.STRING)
-    val status: StatusTable,
+    @JsonProperty("id_status")
+    val idStatus: Int,
 )
-
-enum class StatusTable { AVAILABLE, RESERVED, INACTIVE }

@@ -15,7 +15,7 @@ class ManageTablesRepository(
             TablesEntity(
                 name = table.name,
                 capacity = table.capacity,
-                status = table.status,
+                idStatus = table.status,
             )
 
         return tablesJpaRepository.save(tableEntity)
@@ -23,5 +23,14 @@ class ManageTablesRepository(
 
     override fun existsTablesByName(tableName: String): Boolean = tablesJpaRepository.existsTablesEntityByName(tableName)
 
-    override fun findAllTables(): List<TablesEntity> = tablesJpaRepository.findAll()
+    override fun findAllTables(statusTableIds: List<Int>?): List<TablesEntity> =
+        run {
+            if (statusTableIds.isNullOrEmpty()) {
+                tablesJpaRepository.findAll()
+            } else {
+                tablesJpaRepository.findTablesByIdStatusIn(
+                    statusTableIds,
+                )
+            }
+        }
 }

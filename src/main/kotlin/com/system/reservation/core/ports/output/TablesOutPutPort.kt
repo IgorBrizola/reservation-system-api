@@ -8,5 +8,5 @@ interface TablesOutPutPort {
 
     fun existsTablesByName(tableName: String): Boolean
 
-    fun findAllTables(): List<TablesEntity>
+    fun findAllTables(statusTableIds: List<Int>?): List<TablesEntity>
 }

@@ -1,6 +1,7 @@
 package com.system.reservation.adapters.web
 
 import com.system.reservation.adapters.web.doc.TablesOpenAPI
+import com.system.reservation.adapters.web.model.enumerated.StatusTable
 import com.system.reservation.adapters.web.model.request.CreateFormTable
 import com.system.reservation.adapters.web.model.response.TablesResponse
 import com.system.reservation.core.domain.model.tables.Tables
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
@@ -31,8 +33,10 @@ class TablesController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    override fun listAllTables(): List<TablesResponse> {
-        val listTablesEntity = tablesInputPort.listAllTables()
+    override fun listAllTables(
+        @RequestParam statusTableIds: List<Int>?,
+    ): List<TablesResponse> {
+        val listTablesEntity = tablesInputPort.listAllTables(statusTableIds)
 
         val listAllTables =
             listTablesEntity.map { item ->
@@ -40,7 +44,7 @@ class TablesController(
                     id = item.id,
                     name = item.name,
                     capacity = item.capacity,
-                    status = item.status,
+                    status = StatusTable.getById(item.idStatus),
                 )
             }
 
