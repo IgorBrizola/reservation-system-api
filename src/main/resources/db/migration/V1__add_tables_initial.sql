@@ -5,11 +5,22 @@ CREATE TABLE users (
 	password VARCHAR(255) NOT NULL,
 );
 
+CREATE TABLE status_tables (
+    id INT IDENTITY PRIMARY KEY,
+    status VARCHAR(20) NOT NULL
+);
+
 CREATE TABLE tables (
 	id INT IDENTITY PRIMARY KEY,
 	name VARCHAR(100) NOT NULL,
 	capacity INT NOT NULL,
-	status VARCHAR(20) CHECK (status in ('AVAILABLE', 'RESERVED', 'INACTIVE')) NOT NULL
+	id_status INT NOT NULL,
+	CONSTRAINT FK_Status_Tables FOREIGN KEY (id_status) REFERENCES status_tables(id)
+);
+
+CREATE TABLE status_reservation (
+    id INT IDENTITY PRIMARY KEY,
+    status VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE reservations (
@@ -17,5 +28,6 @@ CREATE TABLE reservations (
 	user_id INT NOT NULL,
 	table_id INT NOT NULL,
 	date_reservation INT NOT NULL,
-	status VARCHAR(20) CHECK (status in ('ACTIVE', 'CANCELED'))
+    id_status INT NOT NULL,
+	CONSTRAINT FK_Status_Reservation FOREIGN KEY (id_status) REFERENCES status_reservation(id)
 );
