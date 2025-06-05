@@ -1,5 +1,6 @@
 package com.system.reservation.core.useCases
 
+import com.system.reservation.adapters.repository.model.TablesEntity
 import com.system.reservation.core.domain.exceptions.BusinessException
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.ports.input.TablesInputPort
@@ -30,4 +31,6 @@ class TablesInputPort(
                 throw BusinessException("Table does not follow name default, replace $nameTable to ${nameTable.uppercase()}")
             }
         }
+
+    override fun listAllTables(): List<TablesEntity> = tablesOutPutPort.findAllTables()
 }

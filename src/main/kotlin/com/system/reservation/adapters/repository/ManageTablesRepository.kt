@@ -22,4 +22,6 @@ class ManageTablesRepository(
     }
 
     override fun existsTablesByName(tableName: String): Boolean = tablesJpaRepository.existsTablesEntityByName(tableName)
+
+    override fun findAllTables(): List<TablesEntity> = tablesJpaRepository.findAll()
 }

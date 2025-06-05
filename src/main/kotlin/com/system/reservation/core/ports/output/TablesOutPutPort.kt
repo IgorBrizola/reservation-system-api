@@ -7,4 +7,6 @@ interface TablesOutPutPort {
     fun save(table: Tables): TablesEntity
 
     fun existsTablesByName(tableName: String): Boolean
+
+    fun findAllTables(): List<TablesEntity>
 }

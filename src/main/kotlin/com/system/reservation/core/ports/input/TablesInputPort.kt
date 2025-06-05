@@ -1,5 +1,6 @@
 package com.system.reservation.core.ports.input
 
+import com.system.reservation.adapters.repository.model.TablesEntity
 import com.system.reservation.core.domain.model.tables.Tables
 
 interface TablesInputPort {
@@ -8,4 +9,6 @@ interface TablesInputPort {
     fun validateNameTable(nameTable: String)
 
     fun verifyNameUppercaseTable(nameTable: String)
+
+    fun listAllTables(): List<TablesEntity>
 }
