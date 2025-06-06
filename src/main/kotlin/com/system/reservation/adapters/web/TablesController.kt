@@ -3,12 +3,16 @@ package com.system.reservation.adapters.web
 import com.system.reservation.adapters.web.doc.TablesOpenAPI
 import com.system.reservation.adapters.web.model.enumerated.StatusTable
 import com.system.reservation.adapters.web.model.request.CreateFormTable
+import com.system.reservation.adapters.web.model.request.UpdateFormTable
 import com.system.reservation.adapters.web.model.response.TablesResponse
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.ports.input.TablesInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -50,4 +54,11 @@ class TablesController(
 
         return listAllTables
     }
+
+    @PatchMapping("{tableId}")
+    @ResponseStatus(HttpStatus.OK)
+    override fun updateTablesById(
+        @PathVariable tableId: Int,
+        @RequestBody updateFormTable: UpdateFormTable,
+    ): TablesResponse = tablesInputPort.updateTablesById(tableId, updateFormTable)
 }

@@ -1,6 +1,7 @@
 package com.system.reservation.adapters.web.doc
 
 import com.system.reservation.adapters.web.model.request.CreateFormTable
+import com.system.reservation.adapters.web.model.request.UpdateFormTable
 import com.system.reservation.adapters.web.model.response.TablesResponse
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.ExampleObject
@@ -21,4 +22,9 @@ interface TablesOpenAPI {
                 ],
         ) statusTableIds: List<Int>?,
     ): List<TablesResponse>
+
+    fun updateTablesById(
+        tableId: Int,
+        updateFormTable: UpdateFormTable,
+    ): TablesResponse
 }
