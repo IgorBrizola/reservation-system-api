@@ -19,7 +19,7 @@ class UsersUseCase(
 
     override fun findAllUsers(): List<UserResponse> = usersOutPutPort.findAllUsers()
 
-    override fun findUserById(id: Int): UserResponse = usersOutPutPort.findUserById(id)
+    override fun findUserById(id: Int): Users = usersOutPutPort.findUserById(id)
 
     private fun validateUserExistByEmail(email: String) =
         run {

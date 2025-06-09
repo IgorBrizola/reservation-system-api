@@ -30,14 +30,15 @@ class ManageUsersRepository(
             UserResponse(id = it.id, name = it.name, email = it.email)
         }
 
-    override fun findUserById(id: Int): UserResponse =
+    override fun findUserById(id: Int): Users =
         run {
             val userEntity = usersJpaRepository.findById(id).orElseThrow { BusinessException("User not found with id - $id") }
 
-            return UserResponse(
+            return Users(
                 id = userEntity.id,
                 name = userEntity.name,
                 email = userEntity.email,
+                password = userEntity.password,
             )
         }
 }

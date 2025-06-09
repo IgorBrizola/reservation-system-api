@@ -1,5 +1,7 @@
 package com.system.reservation.adapters.repository.model
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -21,8 +23,8 @@ data class ReservationsEntity(
     @OneToOne
     @JoinColumn(name = "table_id")
     val table: TablesEntity,
+    @Column(name = "date_reservation")
     val dateReservation: Instant,
-    val status: StatusReservation
+    @JsonProperty("id_status")
+    val idStatus: Int,
 )
-
-enum class StatusReservation { ACTIVE, CANCELED}

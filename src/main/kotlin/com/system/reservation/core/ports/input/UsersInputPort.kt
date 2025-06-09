@@ -8,5 +8,5 @@ interface UsersInputPort {
 
     fun findAllUsers(): List<UserResponse>
 
-    fun findUserById(id: Int): UserResponse
+    fun findUserById(id: Int): Users
 }

@@ -42,5 +42,13 @@ class UsersController(
     @ResponseStatus(HttpStatus.OK)
     override fun findUserById(
         @PathVariable id: Int,
-    ): UserResponse = usersInputPort.findUserById(id)
+    ): UserResponse {
+        val user = usersInputPort.findUserById(id)
+
+        return UserResponse(
+            id = user.id,
+            name = user.name,
+            email = user.email,
+        )
+    }
 }
