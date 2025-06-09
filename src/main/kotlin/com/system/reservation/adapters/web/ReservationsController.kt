@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -76,21 +77,22 @@ class ReservationsController(
     @ResponseStatus(HttpStatus.OK)
     override fun findAllReservations(): List<ReservationsResponse> = reservationsInputPort.findAllReservation()
 
-    @PatchMapping
+    @PatchMapping("{reservationId}/cancel")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    override fun cancelReservationById(reservationId: Int) =
-        run {
-            val reservation = reservationsInputPort.findReservationById(reservationId)
-            verifyIfStatusReservationIsActive(reservation.status)
+    override fun cancelReservationById(
+        @PathVariable reservationId: Int,
+    ) = run {
+        val reservation = reservationsInputPort.findReservationById(reservationId)
+        verifyIfStatusReservationIsActive(reservation.status)
 
-            reservationsInputPort.cancelReservation(reservation).also {
-                tablesInputPort.updateTablesById(
-                    reservation.table.id!!,
-                    updateFormTable = UpdateFormTable(status = StatusTable.AVAILABLE.statusId),
-                )
-            }
+        reservationsInputPort.cancelReservation(reservation).also {
+            tablesInputPort.updateTablesById(
+                reservation.table.id!!,
+                updateFormTable = UpdateFormTable(status = StatusTable.AVAILABLE.statusId),
+            )
         }
+    }
 
     private fun verifyIfStatusReservationIsActive(status: Int) =
         run {
