@@ -11,5 +11,5 @@ interface UsersOutPutPort {
 
     fun findAllUsers(): List<UserResponse>
 
-    fun findUserById(id: Int): UserResponse
+    fun findUserById(id: Int): Users
 }

@@ -27,7 +27,9 @@ CREATE TABLE reservations (
 	id INT IDENTITY PRIMARY KEY,
 	user_id INT NOT NULL,
 	table_id INT NOT NULL,
-	date_reservation INT NOT NULL,
+	date_reservation DATETIME2 NOT NULL,
     id_status INT NOT NULL,
-	CONSTRAINT FK_Status_Reservation FOREIGN KEY (id_status) REFERENCES status_reservation(id)
+	CONSTRAINT FK_Status_Reservation FOREIGN KEY (id_status) REFERENCES status_reservation(id),
+	CONSTRAINT FK_User_id FOREIGN KEY (user_id) REFERENCES users(id),
+	CONSTRAINT FK_Table_id FOREIGN KEY (table_id) REFERENCES tables(id)
 );

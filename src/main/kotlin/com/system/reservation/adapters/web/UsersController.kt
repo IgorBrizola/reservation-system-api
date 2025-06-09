@@ -6,6 +6,7 @@ import com.system.reservation.adapters.web.model.response.UserResponse
 import com.system.reservation.core.domain.model.users.Users
 import com.system.reservation.core.ports.input.UsersInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,6 +22,7 @@ class UsersController(
 ) : UsersOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     override fun createNewUser(
         @RequestBody createFormUser: CreateFormUser,
     ) {
@@ -42,5 +44,13 @@ class UsersController(
     @ResponseStatus(HttpStatus.OK)
     override fun findUserById(
         @PathVariable id: Int,
-    ): UserResponse = usersInputPort.findUserById(id)
+    ): UserResponse {
+        val user = usersInputPort.findUserById(id)
+
+        return UserResponse(
+            id = user.id,
+            name = user.name,
+            email = user.email,
+        )
+    }
 }
