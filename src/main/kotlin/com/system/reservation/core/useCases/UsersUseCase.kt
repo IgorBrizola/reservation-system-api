@@ -1,5 +1,6 @@
 package com.system.reservation.core.useCases
 
+import com.system.reservation.adapters.web.model.response.UserResponse
 import com.system.reservation.core.domain.exceptions.BusinessException
 import com.system.reservation.core.domain.model.users.Users
 import com.system.reservation.core.ports.input.UsersInputPort
@@ -15,6 +16,10 @@ class UsersUseCase(
 
         usersOutPutPort.save(user)
     }
+
+    override fun findAllUsers(): List<UserResponse> = usersOutPutPort.findAllUsers()
+
+    override fun findUserById(id: Int): UserResponse = usersOutPutPort.findUserById(id)
 
     private fun validateUserExistByEmail(email: String) =
         run {
