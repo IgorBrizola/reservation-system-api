@@ -1,5 +1,6 @@
 package com.system.reservation.core.domain.model.reservations
 
+import com.system.reservation.adapters.web.model.enumerated.StatusReservation
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.domain.model.users.Users
 import java.time.Instant
@@ -9,5 +10,5 @@ data class Reservations(
     val user: Users,
     val table: Tables,
     val dateReservation: Instant,
-    val status: Int = 1,
+    val status: Int = StatusReservation.ACTIVE.statusId,
 )
