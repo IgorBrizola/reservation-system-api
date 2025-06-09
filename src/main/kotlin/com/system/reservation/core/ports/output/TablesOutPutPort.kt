@@ -14,4 +14,6 @@ interface TablesOutPutPort {
     fun findTablesById(tableId: Int): Tables
 
     fun updateTable(table: Tables): TablesResponse
+
+    fun deleteTableById(tableId: Int)
 }

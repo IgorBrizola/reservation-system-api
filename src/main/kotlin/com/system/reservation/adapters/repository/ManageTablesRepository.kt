@@ -69,4 +69,6 @@ class ManageTablesRepository(
             status = StatusTable.getById(saveTableUpdated.idStatus),
         )
     }
+
+    override fun deleteTableById(tableId: Int) = tablesJpaRepository.deleteById(tableId)
 }

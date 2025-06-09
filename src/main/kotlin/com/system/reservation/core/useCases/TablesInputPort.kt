@@ -65,6 +65,12 @@ class TablesInputPort(
         return tablesOutPutPort.updateTable(updateTable)
     }
 
+    override fun deleteTableById(tableId: Int) =
+        run {
+            findTableById(tableId)
+            tablesOutPutPort.deleteTableById(tableId)
+        }
+
     private fun validateStatusTable(
         statusId: Int,
         table: Tables,

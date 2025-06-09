@@ -16,4 +16,6 @@ interface TablesInputPort {
         tableId: Int,
         updateFormTable: UpdateFormTable,
     ): TablesResponse
+
+    fun deleteTableById(tableId: Int)
 }

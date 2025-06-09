@@ -27,4 +27,6 @@ interface TablesOpenAPI {
         tableId: Int,
         updateFormTable: UpdateFormTable,
     ): TablesResponse
+
+    fun deleteTableById(tableId: Int)
 }

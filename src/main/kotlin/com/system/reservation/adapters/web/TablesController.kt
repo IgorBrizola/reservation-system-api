@@ -8,6 +8,7 @@ import com.system.reservation.adapters.web.model.response.TablesResponse
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.ports.input.TablesInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -61,4 +62,10 @@ class TablesController(
         @PathVariable tableId: Int,
         @RequestBody updateFormTable: UpdateFormTable,
     ): TablesResponse = tablesInputPort.updateTablesById(tableId, updateFormTable)
+
+    @DeleteMapping("{tableId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    override fun deleteTableById(
+        @PathVariable tableId: Int,
+    ) = tablesInputPort.deleteTableById(tableId)
 }
