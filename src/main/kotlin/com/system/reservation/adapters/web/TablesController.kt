@@ -8,6 +8,7 @@ import com.system.reservation.adapters.web.model.response.TablesResponse
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.ports.input.TablesInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -26,6 +27,7 @@ class TablesController(
 ) : TablesOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     override fun registerNewTable(createNewTable: CreateFormTable) {
         val table =
             Tables(
@@ -58,6 +60,7 @@ class TablesController(
 
     @PatchMapping("{tableId}")
     @ResponseStatus(HttpStatus.OK)
+    @Transactional
     override fun updateTablesById(
         @PathVariable tableId: Int,
         @RequestBody updateFormTable: UpdateFormTable,

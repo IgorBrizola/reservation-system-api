@@ -9,4 +9,8 @@ interface ReservationsInputPort {
     fun findAllReservation(): List<ReservationsResponse>
 
     fun verifyIfUserAlreadyReservation(userId: Int): Boolean
+
+    fun findReservationById(reservationId: Int): Reservations
+
+    fun cancelReservation(reservations: Reservations)
 }

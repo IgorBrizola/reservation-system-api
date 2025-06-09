@@ -1,6 +1,7 @@
 package com.system.reservation.adapters.web
 
 import com.system.reservation.adapters.web.doc.ReservationOpenAPI
+import com.system.reservation.adapters.web.model.enumerated.StatusReservation
 import com.system.reservation.adapters.web.model.enumerated.StatusTable
 import com.system.reservation.adapters.web.model.request.CreateFormReservation
 import com.system.reservation.adapters.web.model.request.UpdateFormTable
@@ -11,7 +12,9 @@ import com.system.reservation.core.ports.input.ReservationsInputPort
 import com.system.reservation.core.ports.input.TablesInputPort
 import com.system.reservation.core.ports.input.UsersInputPort
 import org.springframework.http.HttpStatus
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -27,6 +30,7 @@ class ReservationsController(
 ) : ReservationOpenAPI {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
     override fun createNewReservation(
         @RequestBody createFormReservation: CreateFormReservation,
     ) {
@@ -65,10 +69,31 @@ class ReservationsController(
         capacity: Int,
         capacityTable: Int,
     ) = run {
-        if (capacity > capacityTable) throw BusinessException("The table that you pick, has not capacity!")
+        if (capacity > capacityTable) throw BusinessException("The table that you picked, has only capacity for $capacityTable people!")
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     override fun findAllReservations(): List<ReservationsResponse> = reservationsInputPort.findAllReservation()
+
+    @PatchMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
+    override fun cancelReservationById(reservationId: Int) =
+        run {
+            val reservation = reservationsInputPort.findReservationById(reservationId)
+            verifyIfStatusReservationIsActive(reservation.status)
+
+            reservationsInputPort.cancelReservation(reservation).also {
+                tablesInputPort.updateTablesById(
+                    reservation.table.id!!,
+                    updateFormTable = UpdateFormTable(status = StatusTable.AVAILABLE.statusId),
+                )
+            }
+        }
+
+    private fun verifyIfStatusReservationIsActive(status: Int) =
+        run {
+            if (status != StatusReservation.ACTIVE.statusId) throw BusinessException("Reservation is not active!")
+        }
 }

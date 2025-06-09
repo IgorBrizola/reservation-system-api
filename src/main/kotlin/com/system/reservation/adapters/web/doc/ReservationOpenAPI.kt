@@ -9,4 +9,6 @@ interface ReservationOpenAPI {
     fun createNewReservation(createFormReservation: CreateFormReservation)
 
     fun findAllReservations(): List<ReservationsResponse>
+
+    fun cancelReservationById(reservationId: Int)
 }
