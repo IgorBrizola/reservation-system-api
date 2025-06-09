@@ -8,15 +8,18 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class ManageUsersRepository(
-    private val usersJpaRepository: UsersJpaRepository
-): UsersOutPutPort {
+    private val usersJpaRepository: UsersJpaRepository,
+) : UsersOutPutPort {
     override fun save(user: Users): UsersEntity {
-       val userEntity = UsersEntity(
-           name = user.name,
-           email = user.email,
-           password = user.password
-       )
+        val userEntity =
+            UsersEntity(
+                name = user.name,
+                email = user.email,
+                password = user.password,
+            )
 
         return usersJpaRepository.save(userEntity)
     }
+
+    override fun existsUserByEmail(email: String): Boolean = usersJpaRepository.existsUserEntityByEmail(email)
 }
