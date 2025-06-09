@@ -1,6 +1,7 @@
 spring:
   application:
     name: reservation
+    version: 1.0.2
   datasource:
     url: ${app.datasource.db-name.host}
     username: ${app.datasource.db-name.username}
@@ -9,4 +10,12 @@ spring:
     hikari:
       maximumPoolSize: 8
       minimumIdle: 4
+logging:
+  level:
+    root: INFO
+    org.springframework: WARN
+    org.hibernate: WARN
+    com.zaxxer.hikari: WARN
+    org.flywaydb: WARN
+    org.apache: WARN
 
