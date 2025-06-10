@@ -2,7 +2,6 @@ package com.system.reservation.adapters.repository
 
 import com.system.reservation.adapters.repository.jpa.UsersJpaRepository
 import com.system.reservation.adapters.repository.model.UsersEntity
-import com.system.reservation.adapters.web.model.response.UserResponse
 import com.system.reservation.core.domain.exceptions.BusinessException
 import com.system.reservation.core.domain.model.users.Users
 import com.system.reservation.core.ports.output.UsersOutPutPort
@@ -25,9 +24,9 @@ class ManageUsersRepository(
 
     override fun existsUserByEmail(email: String): Boolean = usersJpaRepository.existsUserEntityByEmail(email)
 
-    override fun findAllUsers(): List<UserResponse> =
+    override fun findAllUsers(): List<Users> =
         usersJpaRepository.findAll().map {
-            UserResponse(id = it.id, name = it.name, email = it.email)
+            Users(id = it.id, name = it.name, email = it.email, password = it.password)
         }
 
     override fun findUserById(id: Int): Users =

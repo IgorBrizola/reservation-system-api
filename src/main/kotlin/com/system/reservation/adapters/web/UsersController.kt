@@ -38,7 +38,14 @@ class UsersController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    override fun findAllUsers(): List<UserResponse> = usersInputPort.findAllUsers()
+    override fun findAllUsers(): List<UserResponse> =
+        usersInputPort.findAllUsers().map {
+            UserResponse(
+                id = it.id,
+                name = it.name,
+                email = it.email,
+            )
+        }
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)

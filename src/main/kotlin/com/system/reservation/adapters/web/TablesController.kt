@@ -1,11 +1,12 @@
 package com.system.reservation.adapters.web
 
 import com.system.reservation.adapters.web.doc.TablesOpenAPI
-import com.system.reservation.adapters.web.model.enumerated.StatusTable
 import com.system.reservation.adapters.web.model.request.CreateFormTable
 import com.system.reservation.adapters.web.model.request.UpdateFormTable
 import com.system.reservation.adapters.web.model.response.TablesResponse
+import com.system.reservation.core.domain.model.enumerated.StatusTable
 import com.system.reservation.core.domain.model.tables.Tables
+import com.system.reservation.core.domain.model.tables.request.UpdateTable
 import com.system.reservation.core.ports.input.TablesInputPort
 import org.springframework.http.HttpStatus
 import org.springframework.transaction.annotation.Transactional
@@ -51,7 +52,7 @@ class TablesController(
                     id = item.id,
                     name = item.name,
                     capacity = item.capacity,
-                    status = StatusTable.getById(item.idStatus),
+                    status = StatusTable.getById(item.status),
                 )
             }
 
@@ -64,7 +65,25 @@ class TablesController(
     override fun updateTablesById(
         @PathVariable tableId: Int,
         @RequestBody updateFormTable: UpdateFormTable,
-    ): TablesResponse = tablesInputPort.updateTablesById(tableId, updateFormTable)
+    ): TablesResponse =
+        run {
+            val tables =
+                tablesInputPort.updateTablesById(
+                    tableId,
+                    UpdateTable(
+                        name = updateFormTable.name,
+                        capacity = updateFormTable.capacity,
+                        status = updateFormTable.status,
+                    ),
+                )
+
+            return TablesResponse(
+                id = tables.id,
+                name = tables.name,
+                capacity = tables.capacity,
+                status = StatusTable.getById(tables.status),
+            )
+        }
 
     @DeleteMapping("{tableId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

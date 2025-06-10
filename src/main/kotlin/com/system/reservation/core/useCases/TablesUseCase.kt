@@ -1,17 +1,16 @@
 package com.system.reservation.core.useCases
 
-import com.system.reservation.adapters.repository.model.TablesEntity
-import com.system.reservation.adapters.web.model.enumerated.StatusTable
-import com.system.reservation.adapters.web.model.request.UpdateFormTable
-import com.system.reservation.adapters.web.model.response.TablesResponse
 import com.system.reservation.core.domain.exceptions.BusinessException
+import com.system.reservation.core.domain.model.enumerated.StatusTable
 import com.system.reservation.core.domain.model.tables.Tables
+import com.system.reservation.core.domain.model.tables.request.UpdateTable
 import com.system.reservation.core.ports.input.TablesInputPort
 import com.system.reservation.core.ports.output.TablesOutPutPort
+import com.system.reservation.util.AppUtil
 import org.springframework.stereotype.Service
 
 @Service
-class TablesInputPort(
+class TablesUseCase(
     private val tablesOutPutPort: TablesOutPutPort,
 ) : TablesInputPort {
     override fun createNewTable(table: Tables) {
@@ -31,38 +30,39 @@ class TablesInputPort(
     private fun verifyNameUppercaseTable(nameTable: String) =
         run {
             if (nameTable != nameTable.uppercase()) {
+                AppUtil.logContextError("Table does not follow name default, replace $nameTable to ${nameTable.uppercase()}")
                 throw BusinessException("Table does not follow name default, replace $nameTable to ${nameTable.uppercase()}")
             }
         }
 
-    override fun listAllTables(statusTableIds: List<Int>?): List<TablesEntity> = tablesOutPutPort.findAllTables(statusTableIds)
+    override fun listAllTables(statusTableIds: List<Int>?): List<Tables> = tablesOutPutPort.findAllTables(statusTableIds)
 
     override fun findTableById(tableId: Int): Tables = tablesOutPutPort.findTablesById(tableId)
 
     override fun updateTablesById(
         tableId: Int,
-        updateFormTable: UpdateFormTable,
-    ): TablesResponse {
+        updateTable: UpdateTable,
+    ): Tables {
         val tables = findTableById(tableId)
 
-        updateFormTable.name?.let {
+        updateTable.name?.let {
             validateNameTable(it)
             verifyNameUppercaseTable(it)
         }
 
-        updateFormTable.status?.let {
+        updateTable.status?.let {
             validateStatusTable(it, tables)
         }
 
-        val updateTable =
+        val tableUpdated =
             tables.copy(
                 id = tables.id,
-                name = updateFormTable.name ?: tables.name,
-                capacity = updateFormTable.capacity ?: tables.capacity,
-                status = updateFormTable.status ?: tables.status,
+                name = updateTable.name ?: tables.name,
+                capacity = updateTable.capacity ?: tables.capacity,
+                status = updateTable.status ?: tables.status,
             )
 
-        return tablesOutPutPort.updateTable(updateTable)
+        return tablesOutPutPort.updateTable(tableUpdated)
     }
 
     override fun deleteTableById(tableId: Int) =

@@ -1,7 +1,5 @@
 package com.system.reservation.core.useCases
 
-import com.system.reservation.adapters.web.model.enumerated.StatusReservation
-import com.system.reservation.adapters.web.model.response.ReservationsResponse
 import com.system.reservation.core.domain.model.reservations.Reservations
 import com.system.reservation.core.ports.input.ReservationsInputPort
 import com.system.reservation.core.ports.output.ReservationsOutPutPort
@@ -13,7 +11,7 @@ class ReservationsUseCase(
 ) : ReservationsInputPort {
     override fun save(reservations: Reservations) = reservationsOutPutPort.save(reservations)
 
-    override fun findAllReservation(): List<ReservationsResponse> = reservationsOutPutPort.findAllReservations()
+    override fun findAllReservation(): List<Reservations> = reservationsOutPutPort.findAllReservations()
 
     override fun verifyIfUserAlreadyReservation(userId: Int): Boolean = reservationsOutPutPort.existsReservationByUserId(userId)
 
@@ -23,7 +21,7 @@ class ReservationsUseCase(
         val updateReservation =
             reservations.copy(
                 id = reservations.id,
-                status = StatusReservation.CANCELED.statusId,
+                status = 2,
             )
 
         reservationsOutPutPort.updateReservation(updateReservation)
