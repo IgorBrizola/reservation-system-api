@@ -1,16 +1,19 @@
 package com.system.reservation.adapters.web
 
 import com.system.reservation.adapters.web.doc.ReservationOpenAPI
-import com.system.reservation.adapters.web.model.enumerated.StatusReservation
-import com.system.reservation.adapters.web.model.enumerated.StatusTable
 import com.system.reservation.adapters.web.model.request.CreateFormReservation
-import com.system.reservation.adapters.web.model.request.UpdateFormTable
 import com.system.reservation.adapters.web.model.response.ReservationsResponse
+import com.system.reservation.adapters.web.model.response.TablesResponse
+import com.system.reservation.adapters.web.model.response.UserResponse
 import com.system.reservation.core.domain.exceptions.BusinessException
+import com.system.reservation.core.domain.model.enumerated.StatusReservation
+import com.system.reservation.core.domain.model.enumerated.StatusTable
 import com.system.reservation.core.domain.model.reservations.Reservations
+import com.system.reservation.core.domain.model.tables.request.UpdateTable
 import com.system.reservation.core.ports.input.ReservationsInputPort
 import com.system.reservation.core.ports.input.TablesInputPort
 import com.system.reservation.core.ports.input.UsersInputPort
+import com.system.reservation.util.AppUtil
 import org.springframework.http.HttpStatus
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.GetMapping
@@ -44,7 +47,7 @@ class ReservationsController(
         validateIfTableIsAvailable(table.status)
         verifyIfTableHasCapacity(createFormReservation.capacity, table.capacity)
 
-        tablesInputPort.updateTablesById(tableId = table.id!!, UpdateFormTable(status = 2))
+        tablesInputPort.updateTablesById(tableId = table.id!!, UpdateTable(status = 2))
 
         val reservation =
             Reservations(
@@ -75,7 +78,26 @@ class ReservationsController(
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    override fun findAllReservations(): List<ReservationsResponse> = reservationsInputPort.findAllReservation()
+    override fun findAllReservations(): List<ReservationsResponse> =
+        reservationsInputPort.findAllReservation().map {
+            ReservationsResponse(
+                user =
+                    UserResponse(
+                        id = it.user.id,
+                        name = it.user.name,
+                        email = it.user.email,
+                    ),
+                table =
+                    TablesResponse(
+                        id = it.table.id,
+                        name = it.table.name,
+                        capacity = it.table.capacity,
+                        status = StatusTable.getById(it.table.status),
+                    ),
+                date = AppUtil.getDateFormatBR(it.dateReservation),
+                status = StatusReservation.getById(it.status),
+            )
+        }
 
     @PatchMapping("{reservationId}/cancel")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -89,7 +111,7 @@ class ReservationsController(
         reservationsInputPort.cancelReservation(reservation).also {
             tablesInputPort.updateTablesById(
                 reservation.table.id!!,
-                updateFormTable = UpdateFormTable(status = StatusTable.AVAILABLE.statusId),
+                updateTable = UpdateTable(status = StatusTable.AVAILABLE.statusId),
             )
         }
     }

@@ -4,17 +4,11 @@ import com.system.reservation.adapters.repository.jpa.ReservationsJpaRepository
 import com.system.reservation.adapters.repository.model.ReservationsEntity
 import com.system.reservation.adapters.repository.model.TablesEntity
 import com.system.reservation.adapters.repository.model.UsersEntity
-import com.system.reservation.adapters.web.model.enumerated.StatusReservation
-import com.system.reservation.adapters.web.model.enumerated.StatusTable
-import com.system.reservation.adapters.web.model.response.ReservationsResponse
-import com.system.reservation.adapters.web.model.response.TablesResponse
-import com.system.reservation.adapters.web.model.response.UserResponse
 import com.system.reservation.core.domain.exceptions.BusinessException
 import com.system.reservation.core.domain.model.reservations.Reservations
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.domain.model.users.Users
 import com.system.reservation.core.ports.output.ReservationsOutPutPort
-import com.system.reservation.util.AppUtil.getDateFormatBR
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -78,26 +72,27 @@ class ManageReservationRepository(
         reservationsJpaRepository.save(reservationsEntity)
     }
 
-    override fun findAllReservations(): List<ReservationsResponse> {
+    override fun findAllReservations(): List<Reservations> {
         val reservationsEntity = reservationsJpaRepository.findAllReservationsEntityByIdStatus()
 
         return reservationsEntity.map {
-            ReservationsResponse(
+            Reservations(
                 user =
-                    UserResponse(
+                    Users(
                         id = it.user.id,
                         name = it.user.name,
                         email = it.user.email,
+                        password = it.user.password,
                     ),
                 table =
-                    TablesResponse(
+                    Tables(
                         id = it.table.id,
                         name = it.table.name,
                         capacity = it.table.capacity,
-                        status = StatusTable.getById(it.table.idStatus),
+                        status = it.table.idStatus,
                     ),
-                date = getDateFormatBR(it.dateReservation),
-                status = StatusReservation.getById(it.idStatus),
+                dateReservation = it.dateReservation,
+                status = it.idStatus,
             )
         }
     }

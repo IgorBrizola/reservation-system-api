@@ -1,6 +1,6 @@
 package com.system.reservation.adapters.web.model.response
 
-import com.system.reservation.adapters.web.model.enumerated.StatusReservation
+import com.system.reservation.core.domain.model.enumerated.StatusReservation
 
 data class ReservationsResponse(
     val user: UserResponse,

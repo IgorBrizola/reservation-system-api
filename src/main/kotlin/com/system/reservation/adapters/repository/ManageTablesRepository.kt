@@ -2,8 +2,6 @@ package com.system.reservation.adapters.repository
 
 import com.system.reservation.adapters.repository.jpa.TablesJpaRepository
 import com.system.reservation.adapters.repository.model.TablesEntity
-import com.system.reservation.adapters.web.model.enumerated.StatusTable
-import com.system.reservation.adapters.web.model.response.TablesResponse
 import com.system.reservation.core.domain.exceptions.BusinessException
 import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.ports.output.TablesOutPutPort
@@ -26,14 +24,29 @@ class ManageTablesRepository(
 
     override fun existsTablesByName(tableName: String): Boolean = tablesJpaRepository.existsTablesEntityByName(tableName)
 
-    override fun findAllTables(statusTableIds: List<Int>?): List<TablesEntity> =
+    override fun findAllTables(statusTableIds: List<Int>?): List<Tables> =
         run {
             if (statusTableIds.isNullOrEmpty()) {
-                tablesJpaRepository.findAll()
+                tablesJpaRepository.findAll().map {
+                    Tables(
+                        id = it.id,
+                        name = it.name,
+                        capacity = it.capacity,
+                        status = it.idStatus,
+                    )
+                }
             } else {
-                tablesJpaRepository.findTablesByIdStatusIn(
-                    statusTableIds,
-                )
+                tablesJpaRepository
+                    .findTablesByIdStatusIn(
+                        statusTableIds,
+                    ).map {
+                        Tables(
+                            id = it.id,
+                            name = it.name,
+                            capacity = it.capacity,
+                            status = it.idStatus,
+                        )
+                    }
             }
         }
 
@@ -51,7 +64,7 @@ class ManageTablesRepository(
         )
     }
 
-    override fun updateTable(table: Tables): TablesResponse {
+    override fun updateTable(table: Tables): Tables {
         val tableEntityUpdated =
             TablesEntity(
                 id = table.id,
@@ -62,11 +75,11 @@ class ManageTablesRepository(
 
         val saveTableUpdated = tablesJpaRepository.save(tableEntityUpdated)
 
-        return TablesResponse(
+        return Tables(
             id = saveTableUpdated.id,
             name = saveTableUpdated.name,
             capacity = saveTableUpdated.capacity,
-            status = StatusTable.getById(saveTableUpdated.idStatus),
+            status = saveTableUpdated.idStatus,
         )
     }
 

@@ -1,6 +1,6 @@
 package com.system.reservation.adapters.web.model.response
 
-import com.system.reservation.adapters.web.model.enumerated.StatusTable
+import com.system.reservation.core.domain.model.enumerated.StatusTable
 
 data class TablesResponse(
     val id: Int?,

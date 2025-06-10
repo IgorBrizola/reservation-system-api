@@ -1,6 +1,5 @@
 package com.system.reservation.core.ports.output
 
-import com.system.reservation.adapters.web.model.response.ReservationsResponse
 import com.system.reservation.core.domain.model.reservations.Reservations
 
 interface ReservationsOutPutPort {
@@ -8,7 +7,7 @@ interface ReservationsOutPutPort {
 
     fun updateReservation(reservations: Reservations)
 
-    fun findAllReservations(): List<ReservationsResponse>
+    fun findAllReservations(): List<Reservations>
 
     fun existsReservationByUserId(userId: Int): Boolean
 

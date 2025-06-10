@@ -1,4 +1,4 @@
-package com.system.reservation.adapters.web.model.enumerated
+package com.system.reservation.core.domain.model.enumerated
 
 import com.system.reservation.core.domain.exceptions.BusinessException
 
