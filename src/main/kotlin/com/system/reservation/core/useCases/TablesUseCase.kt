@@ -6,7 +6,8 @@ import com.system.reservation.core.domain.model.tables.Tables
 import com.system.reservation.core.domain.model.tables.request.UpdateTable
 import com.system.reservation.core.ports.input.TablesInputPort
 import com.system.reservation.core.ports.output.TablesOutPutPort
-import com.system.reservation.util.AppUtil
+import com.system.reservation.util.AppUtil.logContext
+import com.system.reservation.util.AppUtil.logContextError
 import org.springframework.stereotype.Service
 
 @Service
@@ -18,11 +19,15 @@ class TablesUseCase(
         verifyNameUppercaseTable(table.name)
 
         tablesOutPutPort.save(table)
+
+        logContext("Table created with success!")
     }
 
     private fun validateNameTable(nameTable: String) =
         run {
             if (tablesOutPutPort.existsTablesByName(nameTable)) {
+                logContextError("Table already exist with is name", nameTable)
+
                 throw BusinessException("Table already exist with is name - $nameTable")
             }
         }
@@ -30,7 +35,7 @@ class TablesUseCase(
     private fun verifyNameUppercaseTable(nameTable: String) =
         run {
             if (nameTable != nameTable.uppercase()) {
-                AppUtil.logContextError("Table does not follow name default, replace $nameTable to ${nameTable.uppercase()}")
+                logContextError("Table does not follow name default, replace $nameTable to ${nameTable.uppercase()}")
                 throw BusinessException("Table does not follow name default, replace $nameTable to ${nameTable.uppercase()}")
             }
         }
